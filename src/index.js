@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import Index from './components';
 import * as serviceWorker from './serviceWorker';
+import Model from './model';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const model = new Model()
+ReactDOM.render(<Index model={model} />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
