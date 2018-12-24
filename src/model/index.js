@@ -1,36 +1,49 @@
 class Model {
   cachedChords = [];
 
-  getChord = (index) => {
-    return this.cachedChords[index];
-  }
-
   getChords = () => {
     return this.cachedChords;
   }
 
   addChord = (chord) => {
-
+    this.cachedChords.push(new CachedChord(chord));
   }
 
-  removeChord = (index) => {
-    this.cachedChords.splice(1, 1);
-  }
-
-  playChord = () => {
-    // TODO
+  removeChord = (start, deleteCount = 1) => {
+    this.cachedChords.splice(start, deleteCount);
   }
 
   playChords = () => {
-    this.cachedChords.map((v, i) => this.playChord(i))
+    for (const i = 0; i < this.cachedChords.length; i++) {
+      this.playChord(i);
+    }
+  }
+
+  playChord = (index) => {
+    if (this.cachedChords[index].enabled) {
+      const wave = this.cachedChords[index].getWave();
+      this.player.play(wave); // TOOD: blocks?
+    }
+  }
+
+  stopChord = () => {
+    this.player.stop(); // TODO: starts next chord or stops them all?
+  }
+
+  playChords = () => {
+    for (const i = 0; i < this.cachedChords.length; i++) {
+      this.playChord(i);
+    }
   }
 
   reloadChord = (index) => {
-    // TODO
+    this.cachedChords[index].reload();
   }
 
   reloadChords = () => {
-    this.cachedChords.map((v, i) => this.reloadChord(i))
+    for (const i = 0; i < this.cachedChords.length; i++) {
+      this.reloadChord(i);
+    }
   }
 }
 

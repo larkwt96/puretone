@@ -6,15 +6,17 @@ class Chord {
     this.intervals.push(root);
   }
 
-  genChord = () => {
+  getNotes = () => {
     const notes = [this.root];
     this.intervals.map(v => notes.push(v))
     return notes;
   };
 
-  addInterval = (interval) => {
-    this.intervals.push(interval);
-  };
+  getWave = (
+
+    addInterval = (interval) => {
+      this.intervals.push(interval);
+    };
 
   removeInterval = (index, length = 1) => {
     this.intervals.splice(index, length)
