@@ -1,17 +1,19 @@
 class Chord {
   root = undefined;
-  intervals = new Array();
+  intervals = [];
 
   constructor(root) {
     this.intervals.push(root);
   }
 
   genChord = () => {
-
+    const notes = [this.root];
+    this.intervals.map(v => notes.push(v))
+    return notes;
   };
 
   addInterval = (interval) => {
-
+    this.intervals.push(interval);
   };
 
   removeInterval = (index, length = 1) => {
@@ -20,12 +22,3 @@ class Chord {
 }
 
 export default Chord;
-
-/*
-- root: Note
-- intervals: Interval[]
-
-+ genChord(): Note[]
-+ addInterval(interval: Interval)
-+ removeInterval(index: int)
-*/

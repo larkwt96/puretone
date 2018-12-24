@@ -1,7 +1,8 @@
 class Wave {
   wave = undefined;
 
-  constructor(length) {
+  constructor(freq, samples, duration) {
+    const length = int(samples * duration);
     this.wave = new Float32Array(length);
   }
 
