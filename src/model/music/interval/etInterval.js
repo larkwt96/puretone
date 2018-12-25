@@ -1,29 +1,19 @@
 import Note from "../note";
 
-class EtInterval extends Interval {
+export default class EtInterval extends Interval {
   base = 12;
-  halfSteps = 0;
+  step = 0;
 
   setBase = (base) => {
     this.base = base;
   }
 
-  setHalfSteps = (halfSteps) => {
-    this.halfSteps = halfSteps;
+  setStep = (step) => {
+    this.step = step;
   }
 
-  getNote = (root) => {
-    let newKey = undefined;
-    if (root.key !== undefined) {
-      newKey = root.key + this.halfSteps;
-    }
-    const newFreq = root.getFreq() * Math.pow(2, this.halfSteps / this.base)
-    const note = Note(newFreq, undefined, newKey);
-    if (root.getName() !== undefined && this.base === 12) {
-      note.genNameFromKey();
-    }
-    return note;
+  generate = (root) => {
+    const power = Math.pow(2, this.step / this.base);
+    return Note(root.getFreq() * power);
   }
-}
-
-export default EtInterval;
+};

@@ -1,50 +1,57 @@
-class Model {
-  cachedChords = [];
-
-  getChords = () => {
-    return this.cachedChords;
+export default class Model {
+  constructor(context) {
+    this.chords = [];
+    this.player = new Player();
+    this.context = context;
   }
 
-  addChord = (chord) => {
-    this.cachedChords.push(new CachedChord(chord));
+  add = (chord) => {
+    this.chords.push({ chord: chord, enabled: true });
   }
 
-  removeChord = (start, deleteCount = 1) => {
+  remove = (start, deleteCount = 1) => {
     this.cachedChords.splice(start, deleteCount);
   }
 
-  playChords = () => {
-    for (const i = 0; i < this.cachedChords.length; i++) {
-      this.playChord(i);
+  enable = (idx) => {
+    this.chords[idx].enable = true;
+  }
+
+  enableAll = () => {
+    for (let idx in this.chords) {
+      this.enable(idx);
     }
   }
 
-  playChord = (index) => {
-    if (this.cachedChords[index].enabled) {
-      const wave = this.cachedChords[index].getWave();
-      this.player.play(wave); // TOOD: blocks?
+  disable = (idx) => {
+    this.chords[idx].enable = false;
+  }
+
+  disableAll = () => {
+    for (let idx in this.chords) {
+      this.disable(idx);
     }
   }
 
-  stopChord = () => {
+  getAll = () => {
+    return this.chords;
+  }
+
+  play = (idx) => {
+    const { chord, enabled } = this.chords[idx];
+    if (enabled) {
+      const sound = chord.getSound()
+      this.player.play(sound); // TOOD: blocks?
+    }
+  }
+
+  playAll = () => {
+    for (let idx in this.chords) {
+      this.play(idx);
+    }
+  }
+
+  stop = () => {
     this.player.stop(); // TODO: starts next chord or stops them all?
   }
-
-  playChords = () => {
-    for (const i = 0; i < this.cachedChords.length; i++) {
-      this.playChord(i);
-    }
-  }
-
-  reloadChord = (index) => {
-    this.cachedChords[index].reload();
-  }
-
-  reloadChords = () => {
-    for (const i = 0; i < this.cachedChords.length; i++) {
-      this.reloadChord(i);
-    }
-  }
 }
-
-export default Model;

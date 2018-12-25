@@ -1,16 +1,21 @@
 import Note from "../note";
-import IntervalEnum from "./intervalEnum"
-import IntervalFactory from "./intervalFactory"
+import IntervalEnum from "./intervalEnum";
+import PureInterval from "./pureInterval";
+import TetInterval from "./tetInterval";
+import EtInterval from "./etInterval";
 
 class Interval {
-  getNote = (root) => {
+  generate = (root) => {
     // unison by default.
-    return Note(root.getFreq(), root.getName(), root.getKey());
+    const { freq, name, key } = root;
+    return Note(freq, name, key);
   }
 }
 
 export {
   Interval as default,
+  PureInterval,
+  TetInterval,
+  EtInterval,
   IntervalEnum,
-  IntervalFactory,
 };
