@@ -1,15 +1,11 @@
 import Chord from "./chord";
 import Note from "./note";
+import TetNote from "./tetNote";
 import NoteBuilder from "./noteBuilder";
-import Wave from "./wave";
-import { Interval, IntervalEnum, IntervalFactory } from "./interval";
 
 export {
   Chord as default,
-  Interval,
-  IntervalEnum,
-  IntervalFactory,
   Note,
+  TetNote,
   NoteBuilder,
-  Wave,
 };

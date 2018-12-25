@@ -1,4 +1,4 @@
-export default class NoteBuilder {
+class NoteBuilder {
   getStdA440 = () => {
     return Note(440, "A4", 49);
   }
@@ -11,3 +11,5 @@ export default class NoteBuilder {
     return Note(undefined, undefined, key);
   }
 };
+
+export default NoteBuilder;

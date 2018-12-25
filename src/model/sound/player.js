@@ -1,4 +1,4 @@
-export default class Player {
+class Player {
   constructor(context) {
     this.context = context;
     this.volume = 0.2;
@@ -35,4 +35,6 @@ export default class Player {
       this.source = undefined;
     }
   }
-}
+};
+
+export default Player;

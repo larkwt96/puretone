@@ -1,6 +1,6 @@
-import SoundType from "./sound/soundType";
+import SoundType from "../sound/soundType";
 
-export default class Chord {
+class Chord {
   constructor(root, duration = 1.0, soundType = undefined) {
     this.root = root;
     this.intervals = [];
@@ -55,4 +55,6 @@ export default class Chord {
   generate = (sampleRate) => {
     // TODO
   }
-}
+};
+
+export default Chord;

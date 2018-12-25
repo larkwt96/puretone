@@ -1,4 +1,4 @@
-export default class Model {
+class Model {
   constructor(context) {
     this.chords = [];
     this.player = new Player();
@@ -55,3 +55,5 @@ export default class Model {
     this.player.stop(); // TODO: starts next chord or stops them all?
   }
 }
+
+export default Model;

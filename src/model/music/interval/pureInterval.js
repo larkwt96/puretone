@@ -1,6 +1,6 @@
 import Note from "../note";
 
-export default class PureInterval {
+class PureInterval {
   constructor(num, den = 1) {
     this.setRatio(num, den);
   }
@@ -57,3 +57,5 @@ export default class PureInterval {
     }
   }
 };
+
+export default PureInterval;
