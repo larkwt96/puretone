@@ -1,4 +1,4 @@
-const IntervalRatioEnum = Object.freeze([
+const IntervalStepRatios = Object.freeze([
   [1, 1],
   [16, 15],
   [9, 8],
@@ -14,4 +14,4 @@ const IntervalRatioEnum = Object.freeze([
   [2, 1],
 ]);
 
-export default IntervalRatioEnum;
+export default IntervalStepRatios;

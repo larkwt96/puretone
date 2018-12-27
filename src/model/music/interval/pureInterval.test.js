@@ -1,4 +1,4 @@
-import { PureInterval, IntervalEnum, IntervalRatioEnum } from ".";
+import { PureInterval, IntervalEnum, IntervalStepRatios } from ".";
 import { Tone } from "..";
 
 let interval;
@@ -60,7 +60,7 @@ test("generate setden", () => {
 });
 
 test("constructor", () => {
-  const fifth = IntervalRatioEnum[IntervalEnum.PERFECT_FIFTH];
+  const fifth = IntervalStepRatios[IntervalEnum.PERFECT_FIFTH];
   interval = new PureInterval(fifth);
   const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 3 / 2);
@@ -73,7 +73,7 @@ test("set ratio", () => {
 });
 
 test("set ratio", () => {
-  const fifth = IntervalRatioEnum[IntervalEnum.PERFECT_FIFTH];
+  const fifth = IntervalStepRatios[IntervalEnum.PERFECT_FIFTH];
   const { num, den, ratio } = new PureInterval(fifth);
   expect(num).toBe(3);
   expect(den).toBe(2);
@@ -81,7 +81,7 @@ test("set ratio", () => {
 });
 
 test("set num", () => {
-  [interval.num, interval.den] = IntervalRatioEnum[IntervalEnum.PERFECT_FIFTH];
+  [interval.num, interval.den] = IntervalStepRatios[IntervalEnum.PERFECT_FIFTH];
   const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 3 / 2);
 });

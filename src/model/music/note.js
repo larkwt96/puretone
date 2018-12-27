@@ -1,6 +1,7 @@
 import { Tone } from ".";
 
 class Note extends Tone {
+  // TODO
   constructor(freq, name, key) {
     super(freq);
     this.freq = freq;

@@ -2,6 +2,7 @@ import Interval from "./interval";
 import { IntervalEnum } from ".";
 
 class TetInterval extends Interval {
+  // TODO
   constructor() {
     super();
     this.intervals = [];
