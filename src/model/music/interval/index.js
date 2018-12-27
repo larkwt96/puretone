@@ -1,16 +1,6 @@
-import Note from "../note";
-import IntervalEnum from "./intervalEnum"
-import IntervalFactory from "./intervalFactory"
-
-class Interval {
-  getNote = (root) => {
-    // unison by default.
-    return Note(root.getFreq(), root.getName(), root.getKey());
-  }
-}
-
-export {
-  Interval as default,
-  IntervalEnum,
-  IntervalFactory,
-};
+export { default as Interval } from "./interval";
+export { default as IntervalEnum } from "./intervalEnum";
+export { default as IntervalRatioEnum } from "./intervalRatioEnum";
+export { default as PureInterval } from "./pureInterval";
+export { default as TetInterval } from "./tetInterval";
+export { default as EtInterval } from "./etInterval";

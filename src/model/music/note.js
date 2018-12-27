@@ -18,10 +18,6 @@ class Note {
     return this;
   }
 
-  getFreq = () => {
-    return this.freq;
-  }
-
   toString = () => {
     return this.name !== undefined ? this.name : "(" + this.freq + " hz)";
   }

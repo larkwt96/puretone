@@ -1,8 +1,8 @@
-class WavePlayer {
-  volume = 0.2;
-
+class Player {
   constructor(context) {
     this.context = context;
+    this.volume = 0.2;
+    this.source = undefined;
   }
 
   setVolume = (volume) => {
@@ -14,7 +14,7 @@ class WavePlayer {
     this.volume = volume;
   };
 
-  play = (wave) => {
+  play = (sound) => {
     // build buffer
     const buf = new Float32Array(wave.getWave().map(v => v * this.volume));
     const buffer = this.context.createBuffer(1, buf.length, this.context.sampleRate)
@@ -30,9 +30,11 @@ class WavePlayer {
   }
 
   stop = () => {
-    this.source.stop();
-    this.source = undefined; // TODO do this?
+    if (this.source !== undefined) {
+      this.source.stop();
+      this.source = undefined;
+    }
   }
-}
+};
 
-export default WavePlayer;
+export default Player;

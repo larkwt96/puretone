@@ -1,26 +1,60 @@
-class Chord {
-  root = undefined;
-  intervals = [];
+import { SoundType } from "../sound";
 
-  constructor(root) {
-    this.intervals.push(root);
+class Chord {
+  constructor(root, duration = 1.0, soundType = undefined) {
+    this.root = root;
+    this.intervals = [];
+    this.setDuration(duration);
+    this.setSoundType(soundType);
+    this.notes = undefined;
+    this.sound = undefined;
   }
 
+  setSoundType = (soundType) => {
+    if (soundType === undefined) {
+      soundType = SoundType.FLAT;
+    }
+    this.soundType = soundType;
+  }
+
+  addInterval = (interval) => {
+    this.intervals.push(interval);
+  }
+
+  removeInterval = (idx, deleteCount = 1) => {
+    this.intervals.splice(idx, deleteCount);
+  }
+
+  getIntervals = () => {
+    return this.intervals;
+  }
+
+  setDuration = (duration) => {
+    if (duration < 0) {
+      duration = 0.0;
+    } else if (duration > 1.0) {
+      duration = 1.0;
+    }
+    this.duration = duration;
+  }
   getNotes = () => {
-    const notes = [this.root];
-    this.intervals.map(v => notes.push(v))
-    return notes;
-  };
+    if (this.notes === undefined) {
+      this.buildNotes();
+    }
+    return this.notes;
+  }
 
-  getWave = (
+  buildNotes = () => {
+    this.notes = [this.root];
+    for (idx in this.intervals) {
+      const note = this.intervals[idx].generate(this.root);
+      this.notes.push(note);
+    }
+  }
 
-    addInterval = (interval) => {
-      this.intervals.push(interval);
-    };
-
-  removeInterval = (index, length = 1) => {
-    this.intervals.splice(index, length)
-  };
-}
+  generate = (sampleRate) => {
+    // TODO
+  }
+};
 
 export default Chord;

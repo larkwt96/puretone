@@ -1,15 +1,18 @@
+import Note from "./note";
+import TetNote from "./tetNote";
+
 class NoteBuilder {
-  getStdA440 = () => {
-    return Note(440, "A4", 49);
+  static getStdA440 = () => {
+    return new TetNote(440, "A4", 49);
   }
 
-  getNoteByName = (name) => {
-    return Note(undefined, name, undefined);
+  static getNoteByName = (name) => {
+    return new Note(undefined, name, undefined);
   }
 
-  getNoteByKey = (key) => {
-    return Note(undefined, undefined, key);
+  static getNoteByKey = (key) => {
+    return new Note(undefined, undefined, key);
   }
-}
+};
 
 export default NoteBuilder;
