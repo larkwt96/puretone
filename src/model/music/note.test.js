@@ -1,4 +1,5 @@
+import { Note } from ".";
 
-test("constructor", () => {
-
+test("construct", () => {
+  expect(new Note()).toBeDefined();
 });

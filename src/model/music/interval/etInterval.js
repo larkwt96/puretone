@@ -1,5 +1,5 @@
 import Interval from "./interval";
-import { Note } from "..";
+import { Tone } from "..";
 
 class EtInterval extends Interval {
   constructor(step = 0, base = 12) {
@@ -10,7 +10,7 @@ class EtInterval extends Interval {
 
   generate = (root) => {
     const power = Math.pow(2, this.step / this.base);
-    return new Note(root.freq * power);
+    return new Tone(root.freq * power);
   };
 };
 

@@ -1,5 +1,5 @@
 import { PureInterval, IntervalEnum, IntervalRatioEnum } from ".";
-import { Note } from "..";
+import { Tone } from "..";
 
 let interval;
 
@@ -49,26 +49,26 @@ test("set den", () => {
 
 test("generate setnum", () => {
   interval.num = 5;
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 5);
 });
 
 test("generate setden", () => {
   interval.den = 5;
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 1 / 5);
 });
 
 test("constructor", () => {
   const fifth = IntervalRatioEnum[IntervalEnum.PERFECT_FIFTH];
   interval = new PureInterval(fifth);
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 3 / 2);
 });
 
 test("set ratio", () => {
   interval.ratio = [6, 4];
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 3 / 2);
 });
 
@@ -82,18 +82,18 @@ test("set ratio", () => {
 
 test("set num", () => {
   [interval.num, interval.den] = IntervalRatioEnum[IntervalEnum.PERFECT_FIFTH];
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 3 / 2);
 });
 
 test("set ratio", () => {
   interval.den = 5;
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 1 / 5);
 });
 
 test("generate", () => {
   interval.den = 5;
-  const { freq } = interval.generate(new Note(440));
+  const { freq } = interval.generate(new Tone(440));
   expect(freq).toBeCloseTo(440 * 1 / 5);
 });

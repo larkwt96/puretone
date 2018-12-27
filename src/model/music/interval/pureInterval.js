@@ -1,4 +1,4 @@
-import { Note } from "..";
+import { Tone } from "..";
 
 class PureInterval {
   constructor(num, den) {
@@ -23,7 +23,7 @@ class PureInterval {
   };
 
   generate = (root) => {
-    return new Note(root.freq * this.num / this.den);
+    return new Tone(root.freq * this.num / this.den);
   };
 };
 

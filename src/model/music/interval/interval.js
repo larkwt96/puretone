@@ -1,10 +1,10 @@
-import { Note } from "..";
+import { Tone } from "..";
 
 class Interval {
   generate = (root) => {
     // unison by default.
     const { freq, name, key } = root;
-    return new Note(freq, name, key);
+    return new Tone(freq, name, key);
   }
 };
 
