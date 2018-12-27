@@ -1,9 +1,3 @@
-import Sound from "./sound";
-import SoundType from "./soundType";
-import Player from "./player";
-
-export {
-  Sound as default,
-  SoundType,
-  Player,
-};
+export { default as Sound } from "./sound";
+export { default as SoundType } from "./soundtype";
+export { default as Player } from "./player";

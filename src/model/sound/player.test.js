@@ -1,4 +1,5 @@
+import Player from "./player";
 
-test("add tests", () => {
-
+test("Player construction", () => {
+  new Player();
 });

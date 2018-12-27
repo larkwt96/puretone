@@ -1,21 +1,16 @@
 import Interval from "./interval";
-import Note from "../note";
+import { Note } from "..";
 
 class EtInterval extends Interval {
-  base = 12;
-  step = 0;
-
-  setBase = (base) => {
-    this.base = base;
-  };
-
-  setStep = (step) => {
+  constructor(step = 0, base = 12) {
+    super();
     this.step = step;
-  };
+    this.base = base;
+  }
 
   generate = (root) => {
     const power = Math.pow(2, this.step / this.base);
-    return Note(root.getFreq() * power);
+    return new Note(root.freq * power);
   };
 };
 

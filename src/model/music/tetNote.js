@@ -1,4 +1,6 @@
-class TetNote {
+import Note from "./note";
+
+class TetNote extends Note {
 
 };
 

@@ -1,5 +1,5 @@
-import Sound from ".";
+import { Sound } from ".";
 
-test("can construct Sound", () => {
+test("Sound constructor", () => {
   new Sound(2, 1);
 });

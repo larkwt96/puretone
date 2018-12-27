@@ -1,13 +1,6 @@
-import Interval from "./interval";
-import IntervalEnum from "./intervalEnum";
-import PureInterval from "./pureInterval";
-import TetInterval from "./tetInterval";
-import EtInterval from "./etInterval";
-
-export {
-  Interval as default,
-  PureInterval,
-  TetInterval,
-  EtInterval,
-  IntervalEnum,
-};
+export { default as Interval } from "./interval";
+export { default as IntervalEnum } from "./intervalEnum";
+export { default as IntervalRatioEnum } from "./intervalRatioEnum";
+export { default as PureInterval } from "./pureInterval";
+export { default as TetInterval } from "./tetInterval";
+export { default as EtInterval } from "./etInterval";
