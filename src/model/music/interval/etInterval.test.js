@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 test("constructor", () => {
-  new EtInterval();
+  expect(new EtInterval()).toBeDefined();
 });
 
 test("constructor params", () => {

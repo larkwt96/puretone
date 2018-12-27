@@ -9,7 +9,7 @@ class Sound {
 
   addChord = (chord) => {
     const notes = chord.getNotes();
-    for (idx in notes) {
+    for (let idx in notes) {
       this.addNote(notes[idx]);
     }
   }
@@ -23,13 +23,13 @@ class Sound {
   }
 
   addFreq = (freq) => {
-    for (idx in this.wave) {
-      this.wave[idx] += waveFn(idx, this.sampleRate, freq);
+    for (let idx in this.wave) {
+      this.wave[idx] += this.sin(idx, this.sampleRate, freq);
     }
   }
 
   addArray = (arr) => {
-    for (idx in arr) {
+    for (let idx in arr) {
       if (idx < this.wave.length) {
         this.wave[idx] = arr[idx];
       } else {

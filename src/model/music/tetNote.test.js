@@ -1,4 +1,5 @@
+import { TetNote } from ".";
 
-test("add tests", () => {
-
+test("construct", () => {
+  expect(new TetNote()).toBeDefined();
 });

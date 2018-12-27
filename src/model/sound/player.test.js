@@ -1,5 +1,5 @@
 import Player from "./player";
 
 test("Player construction", () => {
-  new Player();
+  expect(new Player()).toBeDefined();
 });

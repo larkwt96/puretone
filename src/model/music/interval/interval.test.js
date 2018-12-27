@@ -2,7 +2,7 @@ import Interval from "./interval";
 import { Note, NoteBuilder } from "..";
 
 test("constructor", () => {
-  new Interval();
+  expect(new Interval()).toBeDefined();
 });
 
 test("generate", () => {

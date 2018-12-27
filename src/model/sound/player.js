@@ -16,7 +16,7 @@ class Player {
 
   play = (sound) => {
     // build buffer
-    const buf = new Float32Array(wave.getWave().map(v => v * this.volume));
+    const buf = new Float32Array(sound.getWave().map(v => v * this.volume));
     const buffer = this.context.createBuffer(1, buf.length, this.context.sampleRate)
     buffer.copyToChannel(buf, 0)
 
