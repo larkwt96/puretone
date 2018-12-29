@@ -11,7 +11,6 @@ test("getStdA440 is right", () => {
   expect(key).toBe(49);
 });
 
-/*
 test("getNoteByKey A4", () => {
   const note = NoteBuilder.getNoteByKey(49);
   const { freq, name, key } = note;
@@ -28,7 +27,22 @@ test("getNoteByKey C4", () => {
   expect(key).toBe(40);
 });
 
-test("getNoteByName", () => {
-
+test("getNoteByKey C#4", () => {
+  const note = NoteBuilder.getNoteByKey(41);
+  const { freq, name, key } = note;
+  expect(freq).toBeDefined();
+  expect(name).toBeDefined();
+  expect(key).toBe(41);
 });
-*/
+
+test("getNoteByKey Db4", () => {
+  const note = NoteBuilder.getNoteByKey(41);
+  const { freq, name, key } = note;
+  expect(freq).toBeDefined();
+  expect(name).toBeDefined();
+  expect(key).toBe(41);
+});
+
+test("getNoteByName", () => {
+  const note = NoteBuilder.getNoteByName("C#4");
+});

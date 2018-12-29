@@ -5,18 +5,26 @@ class Player {
     this.source = undefined;
   }
 
-  setVolume = (volume) => {
+  get isPlaying() {
+    return this.source !== undefined;
+  }
+
+  get volume() {
+    return this._volume;
+  }
+
+  set volume(volume) {
     if (volume < 0) {
       volume = 0;
     } else if (volume > 1) {
       volume = 1;
     }
-    this.volume = volume;
+    this._volume = volume;
   };
 
   play = (sound) => {
     // build buffer
-    const buf = new Float32Array(sound.getWave().map(v => v * this.volume));
+    const buf = new Float32Array(sound.wave.map(v => v * this.volume));
     const buffer = this.context.createBuffer(1, buf.length, this.context.sampleRate)
     buffer.copyToChannel(buf, 0)
 

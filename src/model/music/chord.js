@@ -1,60 +1,79 @@
-import { SoundType } from "../sound";
+import { SoundType, Sound } from "../sound";
 
 class Chord {
   constructor(root, duration = 1.0, soundType = undefined) {
     this.root = root;
     this.intervals = [];
-    this.setDuration(duration);
-    this.setSoundType(soundType);
-    this.notes = undefined;
-    this.sound = undefined;
-  }
-
-  setSoundType = (soundType) => {
-    if (soundType === undefined) {
-      soundType = SoundType.FLAT;
-    }
+    this.duration = duration;
     this.soundType = soundType;
+    this._notes = undefined;
+    this._sound = undefined;
   }
 
-  addInterval = (interval) => {
-    this.intervals.push(interval);
-  }
+  get soundType() {
+    return this._soundType;
+  };
 
-  removeInterval = (idx, deleteCount = 1) => {
-    this.intervals.splice(idx, deleteCount);
-  }
+  set soundType(soundType = SoundType.FLAT) {
+    if (this._soundType !== soundType) {
+      this._soundType = soundType;
+      this._sound = undefined;
+    }
+  };
 
-  getIntervals = () => {
-    return this.intervals;
-  }
+  get duration() {
+    return this._duration;
+  };
 
-  setDuration = (duration) => {
+  set duration(duration) {
     if (duration < 0) {
       duration = 0.0;
     } else if (duration > 1.0) {
       duration = 1.0;
     }
-    this.duration = duration;
-  }
-  getNotes = () => {
-    if (this.notes === undefined) {
-      this.buildNotes();
+    if (this._duration !== duration) {
+      this._duration = duration;
+      this._sound = undefined;
     }
-    return this.notes;
-  }
+  };
 
-  buildNotes = () => {
-    this.notes = [this.root];
-    for (idx in this.intervals) {
-      const note = this.intervals[idx].generate(this.root);
-      this.notes.push(note);
+  get notes() {
+    if (this._notes === undefined) {
+      this._notes = [this.root];
+      for (idx in this.intervals) {
+        const note = this.intervals[idx].generate(this.root);
+        this._notes.push(note);
+      }
     }
-  }
+    return this._notes;
+  };
 
-  generate = (sampleRate) => {
-    // TODO
-  }
+  get sound() {
+    return this._sound;
+  };
+
+  addInterval = (interval) => {
+    this.intervals.push(interval);
+    this.reset();
+  };
+
+  removeInterval = (idx, deleteCount = 1) => {
+    this.intervals.splice(idx, deleteCount);
+    this.reset();
+  };
+
+  reset = () => {
+    this._notes = undefined;
+    this._sound = undefined;
+  };
+
+  generate = (sampleRate = 44100 /* 44.1kHz */) => {
+    if (this._sound === undefined) {
+      this._sound = new Sound(this.duration, sampleRate);
+      this._sound.addChord(this);
+    }
+    return this._sound;
+  };
 };
 
 export default Chord;

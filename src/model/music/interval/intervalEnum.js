@@ -5,7 +5,7 @@ const IntervalEnum = Object.freeze({
   MINOR_THIRD: 3,
   MAJOR_THIRD: 4,
   PERFECT_FOURTH: 5,
-  TRITONE: 6,
+  TRITONE: 6, // the diminished fifth
   PERFECT_FIFTH: 7,
   MINOR_SIXTH: 8,
   MAJOR_SIXTH: 9,

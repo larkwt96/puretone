@@ -1,4 +1,4 @@
-import Note from "./note";
+import { Note } from ".";
 
 class NoteBuilder {
   static getStdA440 = () => {
@@ -6,11 +6,13 @@ class NoteBuilder {
   };
 
   static getNoteByName = (name) => {
-    return new Note(undefined, name, undefined);
+    const note = new Note(undefined, name, undefined);
+    return note;
   };
 
   static getNoteByKey = (key) => {
-    return new Note(undefined, undefined, key);
+    const note = new Note(undefined, undefined, key);
+    return note;
   };
 };
 
