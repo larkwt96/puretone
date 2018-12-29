@@ -1,5 +1,11 @@
 import Note from "./note";
 
+let c4;
+
+beforeEach(() => {
+  c4 = new Note(undefined, "C4");
+})
+
 test("no note and no key should throw", () => {
   expect(() => new Note(440)).toThrow();
   expect(() => new Note()).toThrow();
@@ -92,25 +98,50 @@ test("csS#xXnNbB4 resolves", () => {
 
 test("C#4 simplifies to Db4 and back", () => {
   const note = new Note(undefined, "C#4");
-  note.simplify_note();
+  note.simplifyNote();
   expect(note.name).toBe("C♯4");
-  note.simplify_note(true);
+  note.simplifyNote(true);
   expect(note.name).toBe("D♭4");
 });
 
 test("csS#xXnNbB4 simplifies", () => {
   const note = new Note(undefined, "csS#xXnNbB4");
-  note.simplify_note();
+  note.simplifyNote();
   expect(note.name).toBe("F4");
 });
 
 test("bB#bB4 simplifies", () => {
   const note = new Note(undefined, "CbB#bbB4");
-  note.simplify_note();
+  note.simplifyNote();
   expect(note.name).toBe("G♯3");
-  note.simplify_note(true);
+  note.simplifyNote(true);
   expect(note.name).toBe("A♭3");
 });
-/*
-simplify_note = (use_flats = this.use_flats)
-*/
+
+test("simplifyNote centering C4 => Dbb4", () => {
+  const note = new Note(undefined, "C4");
+  note.simplifyNote(undefined, "D4");
+  expect(note.name).toBe("D♭♭4");
+  expect(note.freq).toBeCloseTo(261.625)
+  expect(note.key).toBe(40);
+});
+
+test("simplifyNote centering C4 => Dbb4", () => {
+  c4.simplifyNote(undefined, "d4");
+  expect(c4.name).toBe("D♭♭4");
+});
+
+test("simplifyNote centering C4 => Dbb4", () => {
+  c4.simplifyNote(undefined, "e4");
+  expect(c4.name).toBe("E♭♭♭♭4");
+});
+
+test("simplifyNote centering C4 => Dbb4", () => {
+  c4.simplifyNote(undefined, "e");
+  expect(c4.name).toBe("E♭♭♭♭4");
+});
+
+test("simplifyNote centering C4 => Dbb4", () => {
+  c4.simplifyNote(undefined, "b3");
+  expect(c4.name).toBe("B♯3");
+});

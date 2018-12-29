@@ -36,18 +36,18 @@ class Note extends Tone {
     this.use_flats = use_flats;
     if (key === undefined && note === undefined) {
       throw new Error("must specify key and note");
-    } else if (key === undefined) {
-      this.note = this.parse_note(note);
-      this.key = this.calc_key();
-    } else if (note === undefined) {
+    } else if (key === undefined) { // key not given
+      this.note = this.parseNote(note);
+      this.key = this.calcKey();
+    } else if (note === undefined) { // note not given
       this.key = key;
-      this.note = this.calc_note();
-    } else {
-      this.note = this.parse_note(note);
+      this.note = this.calcNote();
+    } else { // note and key given
+      this.note = this.parseNote(note);
       this.key = key;
     }
-    if (freq === undefined) {
-      this.freq = this.calc_freq();
+    if (freq === undefined) { // calculate freq if not given
+      this.freq = this.calcFreq();
     }
   }
 
@@ -55,7 +55,7 @@ class Note extends Tone {
     return this.toString();
   }
 
-  calc_freq = () => {
+  calcFreq = () => {
     if (this.freq === undefined) {
       return 440 * Math.pow(2, (this.key - 49) / 12);
     } else {
@@ -68,14 +68,14 @@ class Note extends Tone {
     return letter + accidentals + octave;
   };
 
-  parse_note = (note) => {
-    let { letter, accidentals, octave } = Note.parse_note_groups(note)
+  parseNote = (note) => {
+    let { letter, accidentals, octave } = Note.parseNoteGroups(note)
     letter = letter.toUpperCase();
-    accidentals = Note.reformat_accidentals(accidentals);
+    accidentals = Note.reformatAccidentals(accidentals);
     return { letter: letter, accidentals: accidentals, octave: octave };
   };
 
-  static parse_note_groups = (note) => {
+  static parseNoteGroups = (note) => {
     const accidentals = SHARPS + DOUBLE_SHARPS + NATURALS + FLATS;
     const noteRegex = new RegExp("^([A-Ga-g])([" + accidentals + "]*)([-]?[0-9]+)$")
     const match = noteRegex.exec(note);
@@ -85,7 +85,7 @@ class Note extends Tone {
     return { letter: match[1], accidentals: match[2], octave: match[3] }
   };
 
-  static replace_any = (value, old_set, new_value) => {
+  static replaceAny = (value, old_set, new_value) => {
     for (let idx in old_set) {
       const regexp = new RegExp(old_set[idx], "g")
       value = _.replace(value, regexp, new_value)
@@ -93,19 +93,19 @@ class Note extends Tone {
     return value
   };
 
-  static reformat_accidentals = (accidentals) => {
-    accidentals = Note.replace_any(accidentals, SHARPS, SHARP);
-    accidentals = Note.replace_any(accidentals, DOUBLE_SHARPS, SHARP + SHARP);
-    accidentals = Note.replace_any(accidentals, FLATS, FLAT);
-    accidentals = Note.replace_any(accidentals, NATURALS, NATURAL);
+  static reformatAccidentals = (accidentals) => {
+    accidentals = Note.replaceAny(accidentals, SHARPS, SHARP);
+    accidentals = Note.replaceAny(accidentals, DOUBLE_SHARPS, SHARP + SHARP);
+    accidentals = Note.replaceAny(accidentals, FLATS, FLAT);
+    accidentals = Note.replaceAny(accidentals, NATURALS, NATURAL);
     let value = 0;
     for (let idx in accidentals) {
       value += ACCIDENTAL_VALUES[accidentals[idx]];
     }
-    return Note.value_to_accidental(value);
+    return Note.valueToAccidental(value);
   };
 
-  static value_to_accidental = (value) => {
+  static valueToAccidental = (value) => {
     if (value < 0) {
       return _.repeat(FLAT, -value);
     } else if (value === 0) {
@@ -117,7 +117,7 @@ class Note extends Tone {
     }
   };
 
-  calc_key = (note = this.note) => {
+  calcKey = (note = this.note) => {
     let { letter, accidentals, octave } = note;
     let value = NOTE_VALUES[letter]; // get note value
     Array.from(accidentals).map(v => {
@@ -128,35 +128,68 @@ class Note extends Tone {
     return value;
   };
 
-  simplify_note = (use_flats = this.use_flats) => {
-    this.note = this.calc_note(use_flats);
+  simplifyNote = (use_flats = this.use_flats, center) => {
+    if (center === undefined) {
+      this.note = this.calcNote(use_flats);
+    } else {
+      center = center.toUpperCase();
+      if (center.length === 1) {
+        center += this.note.octave;
+      }
+      const paramCheck = /^[A-G][0-9]+$/
+      if (paramCheck.exec(center) === null) {
+        throw new Error("invalid note")
+      }
+      this.center(center);
+    }
   };
 
-  calc_note = (use_flats = this.use_flats) => {
+  center = (center) => {
+    const root = new Note(undefined, center);
+    const accidentalValue = this.key - root.key;
+    const accidentals = Note.valueToAccidental(accidentalValue);
+    this.note.accidentals = accidentals;
+    this.note.letter = center[0];
+    this.note.octave = center.substring(1);
+  };
+
+  calcNoteValue = () => {
     let value = this.key;
     value += 8; // undo A0 adjustment
-    let octave = "" + Math.floor(value / 12);
+    const note_value = value % 12;
+    const octave = Math.floor(value / 12).toString();
+    return { note_value: note_value, octave: octave };
+  }
+
+  calcNote = (use_flats = this.use_flats) => {
+    const { note_value, octave } = this.calcNoteValue();
+    const { letter, accidentals } = this.getNote(note_value, use_flats);
+    return { letter: letter, accidentals: accidentals, octave: octave };
+  };
+
+  getNote(note_value, use_flats) {
+    let letter;
+    let accidentals;
     let value_to_note = {};
     for (let key in NOTE_VALUES) {
       value_to_note[NOTE_VALUES[key]] = key;
     }
-    let note_value = value % 12;
-    let letter;
-    let accidentals;
     if (!(note_value in value_to_note)) {
       if (use_flats) {
         letter = value_to_note[(note_value + 1) % 12];
         accidentals = FLAT;
-      } else {
+      }
+      else {
         letter = value_to_note[(note_value + 11) % 12];
         accidentals = SHARP;
       }
-    } else {
+    }
+    else {
       letter = value_to_note[note_value];
       accidentals = "";
     }
-    return { letter: letter, accidentals: accidentals, octave: octave };
-  };
+    return { letter: letter, accidentals: accidentals };
+  }
 };
 
 export default Note;

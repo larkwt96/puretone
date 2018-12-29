@@ -1,5 +1,5 @@
-import { Interval, EtInterval, PureInterval, IntervalEnum } from ".";
-import IntervalModEnum from "./intervalModEnum";
+import { Interval, EtInterval, PureInterval, IntervalEnum, IntervalModEnum } from ".";
+import { Note } from "..";
 
 class TetInterval extends Interval {
   constructor() {
@@ -9,12 +9,25 @@ class TetInterval extends Interval {
     this._step = 0;
   }
 
+  get step() {
+    if (this._step === undefined) {
+      this._step = 0;
+      for (let idx in this.intervals) {
+        const { type, mod, raise } = this.intervals[idx];
+        this._step += this._calcStep(type, mod, raise);
+      }
+    }
+    return this._step;
+  }
+
   applyInterval = (type = IntervalEnum.UNISON, mods = [], raise = true) => {
     this.intervals.push({ type: type, mods: mods, raise: raise });
+    this._step = undefined;
   };
 
   removeInterval = (idx, deleteCount = 1) => {
     this.intervals.splice(idx, deleteCount);
+    this._step = undefined;
   };
 
   generate = (root) => {
@@ -25,90 +38,73 @@ class TetInterval extends Interval {
     }
   };
 
-  get step() {
-    return this._step;
-  }
-
-  set step(step) {
-    this._step = parseInt(step);
-  }
+  buildPureInterval = () => {
+    let numTotal = 1;
+    let denTotal = 1;
+    for (let idx in this.intervals) {
+      const { type, raise } = this.intervals[idx];
+      const [num, den] = IntervalStepRatios[type]
+      if (!raise) {
+        [num, den] = [den, num];
+      }
+      numTotal *= num;
+      denTotal *= den;
+    }
+    return new PureInterval(numTotal, denTotal);
+  };
 
   generatePureInterval = (root) => {
-    let num = 1;
-    let den = 1;
-    for (let idx in this.intervals) {
-      const { type, mod, raise } = this.intervals[idx];
-      num *= IntervalStepRatios[type][0];
-      den *= IntervalStepRatios[type][1];
-    }
-    return new PureInterval();
+    const tone = this.buildPureInterval().generate(root);
+    return this._generateWithFreq(root, tone.freq);
+  };
+
+  buildEtInterval = () => {
+    return new EtInterval(this.step);
   };
 
   generateEtInterval = (root) => {
-    let { freq, name, key } = root;
-    for (let idx in this.intervals) {
-      const { type, mod, raise } = this.intervals[idx];
-      name = this.calculateName(type, mod, raise);
-      key += this.calculateSteps(type, mod, raise);
-      const interval = new EtInterval(steps);
-      freq = interval.generate(root).freq;
-    }
-    return new Note(freq, name, key);
+    const tone = this.buildEtInterval().generate(root);
+    return this._generateWithFreq(root, tone.freq);
   };
 
-  calculateName = (name, type, mod, raise) => {
-    note = name[0];
-    note = this.raiseNote(name[0], type);
-    octave = name[name.length - 1];
-  };
-
-  raiseNote = (note, type) => {
-    switch (type) {
-      case UNISON:
-        return note;
-      case MINOR_SECOND:
-      case MAJOR_SECOND:
-        note = this.raiseNoteBy(note, 1);
-        break;
-      case MINOR_THIRD:
-      case MAJOR_THIRD:
-        note = this.raiseNoteBy(note, 2);
-        break;
-      case PERFECT_FOURTH:
-        note = this.raiseNoteBy(note, 3);
-        break;
-      case TRITONE:
-      case PERFECT_FIFTH:
-        note = this.raiseNoteBy(note, 4);
-        break;
-      case MINOR_SIXTH:
-      case MAJOR_SIXTH:
-        note = this.raiseNoteBy(note, 5);
-        break;
-      case MINOR_SEVENTH:
-      case MAJOR_SEVENTH:
-        note = this.raiseNoteBy(note, 6);
-        break;
-      case OCTAVE:
-        note = this.raiseNoteBy(note, 7);
-        break;
-    }
-  };
-
-  calculateSteps = (type, mods, raise) => {
-    let steps = 0;
+  _calcStep = (type, mods, raise) => {
+    let step = 0;
     for (let idx in mods) {
-      const mod = mods[idx];
-      [type, steps] = this.applyMod(type, steps, mod);
+      ({ type, step } = this._applyMod(type, step, mods[idx]));
     }
-    steps = type + steps;
+    step = type + step;
     if (!raise) {
-      steps = -steps;
+      step = -step;
     }
-    return steps;
+    return step;
   };
 
-  toMinor = (type) => {
+  _applyMod = (type, step, mod) => {
+    switch (mod) {
+      case IntervalModEnum.AUGMENTED:
+        step++;
+        break;
+      case IntervalModEnum.DIMINISHED:
+        step--;
+        break;
+      case IntervalModEnum.MINOR:
+        type = this.toMinor(type);
+        break;
+      case IntervalModEnum.MAJOR:
+        type = this.toMajor(type);
+        break;
+    }
+    return { type: type, step: step };
+  };
+
+  _generateWithFreq = (root, freq) => {
+    const note = new Note(freq, undefined, root.key + this.step);
+    let center = this._raiseNote(root.note.letter + root.note.octave);
+    note.simplifyNote(undefined, center);
+    return note;
+  };
+
+  _toMinor = (type) => {
     switch (type) {
       case MAJOR_SECOND:
       case MAJOR_THIRD:
@@ -119,7 +115,7 @@ class TetInterval extends Interval {
     return type;
   };
 
-  toMajor = (type) => {
+  _toMajor = (type) => {
     switch (type) {
       case MINOR_SECOND:
       case MINOR_THIRD:
@@ -130,26 +126,102 @@ class TetInterval extends Interval {
     return type;
   };
 
-  applyMod = (steps) => {
-    return steps;
+  _calcLetter = (note) => {
+    for (let idx in this.intervals) {
+      const { type, raise } = this.intervals[idx];
+      note = this._raiseNote(note, type, raise);
+    }
+    return note;
   };
 
-  applyMod = (type, steps, mod) => {
-    switch (mod) {
-      case IntervalModEnum.AUGMENTED:
-        steps++;
+  _raiseNote = (letter, type, raise) => {
+    let raiseBy;
+    switch (type) {
+      case UNISON:
+        raiseBy = 0;
         break;
-      case IntervalModEnum.DIMINISHED:
-        steps--;
+      case MINOR_SECOND:
+      case MAJOR_SECOND:
+        raiseBy = 1;
         break;
-      case IntervalModEnum.MINOR:
-        type = this.toMinor(type);
+      case MINOR_THIRD:
+      case MAJOR_THIRD:
+        raiseBy = 2;
         break;
-      case IntervalModEnum.MAJOR:
-        type = this.toMajor(type);
+      case PERFECT_FOURTH:
+        raiseBy = 3;
+        break;
+      case TRITONE:
+      case PERFECT_FIFTH:
+        raiseBy = 4;
+        break;
+      case MINOR_SIXTH:
+      case MAJOR_SIXTH:
+        raiseBy = 5;
+        break;
+      case MINOR_SEVENTH:
+      case MAJOR_SEVENTH:
+        raiseBy = 6;
+        break;
+      case OCTAVE:
+        raiseBy = 7;
         break;
     }
-    return [type, steps];
+    if (raise) {
+      return this._raiseNoteBy(letter, raiseBy);
+    } else {
+      return this._lowerNoteBy(letter, raiseBy);
+    }
+  };
+
+  _lowerNoteBy = (note, amount = 1) => {
+    let letter = note[0];
+    let octave = parseInt(note.substring(1));
+    for (; amount > 0; amount--) {
+      switch (letter) {
+        case 'A':
+          letter = 'G';
+        case 'B':
+          letter = 'A';
+        case 'C':
+          letter = 'B';
+          octave--;
+        case 'D':
+          letter = 'C';
+        case 'E':
+          letter = 'D';
+        case 'F':
+          letter = 'E';
+        case 'G':
+          letter = 'F';
+      }
+    }
+    return letter + octave;
+  };
+
+  _raiseNoteBy = (note, amount = 1) => {
+    let letter = note[0];
+    let octave = parseInt(note.substring(1));
+    for (; amount > 0; amount--) {
+      switch (letter) {
+        case 'A':
+          letter = 'B';
+        case 'B':
+          letter = 'C';
+          octave++;
+        case 'C':
+          letter = 'D';
+        case 'D':
+          letter = 'E';
+        case 'E':
+          letter = 'F';
+        case 'F':
+          letter = 'G';
+        case 'G':
+          letter = 'A';
+      }
+    }
+    return letter + octave;
   };
 }
 
