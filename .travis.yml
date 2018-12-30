@@ -4,6 +4,6 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   on:
-    branch: release
+    branch: master
     tags: true
     tag: next
