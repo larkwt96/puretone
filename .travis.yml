@@ -1,12 +1,16 @@
 language: node_js
 node_js:
-  - "7"
+- '9'
 cache:
   directories:
-    - node_modules
+  - node_modules
 deploy:
   provider: npm
   skip-cleanup: true
-  github-token: $GITHUB_TOKEN
+  email: lkwilson96@gmail.com
+  api_key: $NPMJS_TOKEN
+  github_token: $GITHUB_TOKEN
   on:
     branch: master
+    repo: larkwt96/puretone
+    tags: true
