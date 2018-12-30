@@ -12,8 +12,10 @@ deploy:
     on:
       repo: larkwt96/puretone
       tags: true
-  - provider: script
+  - provider: pages
+    local-dir: /build
     skip-cleanup: true
-    script: npm run deploy
+    github-token: $GITHUB_TOKEN
+    keep-history: true
     on:
       branch: master
