@@ -5,12 +5,17 @@ cache:
   directories:
   - node_modules
 deploy:
-  provider: npm
-  skip-cleanup: true
-  email: lkwilson96@gmail.com
-  api_key: $NPMJS_TOKEN
-  github_token: $GITHUB_TOKEN
-  on:
-    branch: master
-    repo: larkwt96/puretone
-    tags: true
+  - provider: npm
+    skip-cleanup: true
+    email: lkwilson96@gmail.com
+    api_key: $NPMJS_TOKEN
+    on:
+      repo: larkwt96/puretone
+      tags: true
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    on:
+      branch: master
+      tags: true
