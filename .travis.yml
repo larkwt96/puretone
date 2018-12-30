@@ -13,6 +13,7 @@ deploy:
       repo: larkwt96/puretone
       tags: true
   - provider: script
+    skip-cleanup: true
     script: npm run deploy
     on:
       branch: master
