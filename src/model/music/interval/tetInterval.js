@@ -7,6 +7,21 @@ import {
   IntervalModEnum
 } from ".";
 import { Note } from "..";
+import _ from "lodash";
+
+const MajorIntervals = [
+  IntervalEnum.MAJOR_SECOND,
+  IntervalEnum.MAJOR_THIRD,
+  IntervalEnum.MAJOR_SIXTH,
+  IntervalEnum.MAJOR_SEVENTH,
+];
+
+const MinorIntervals = [
+  IntervalEnum.MINOR_SECOND,
+  IntervalEnum.MINOR_THIRD,
+  IntervalEnum.MINOR_SIXTH,
+  IntervalEnum.MINOR_SEVENTH,
+];
 
 class TetInterval extends Interval {
   constructor() {
@@ -41,11 +56,14 @@ class TetInterval extends Interval {
   };
 
   generate = (root) => {
+    let interval;
     if (this.usePureInterval) {
-      return this.generatePureInterval(root);
+      interval = this.buildPureInterval();
     } else {
-      return this.generateEtInterval(root);
+      interval = this.buildEtInterval();
     }
+    const { freq } = interval.generate(root);
+    return this._generateWithFreq(root, freq);
   };
 
   buildPureInterval = () => {
@@ -63,18 +81,8 @@ class TetInterval extends Interval {
     return new PureInterval(numTotal, denTotal);
   };
 
-  generatePureInterval = (root) => {
-    const tone = this.buildPureInterval().generate(root);
-    return this._generateWithFreq(root, tone.freq);
-  };
-
   buildEtInterval = () => {
     return new EtInterval(this.step);
-  };
-
-  generateEtInterval = (root) => {
-    const tone = this.buildEtInterval().generate(root);
-    return this._generateWithFreq(root, tone.freq);
   };
 
   _calcStep = (type, mods, raise) => {
@@ -115,23 +123,15 @@ class TetInterval extends Interval {
   };
 
   _toMinor = (type) => {
-    switch (type) {
-      case IntervalEnum.MAJOR_SECOND:
-      case IntervalEnum.MAJOR_THIRD:
-      case IntervalEnum.MAJOR_SIXTH:
-      case IntervalEnum.MAJOR_SEVENTH:
-        type--;
+    if (_.indexOf(MajorIntervals, type) !== -1) {
+      type--;
     }
     return type;
   };
 
   _toMajor = (type) => {
-    switch (type) {
-      case IntervalEnum.MINOR_SECOND:
-      case IntervalEnum.MINOR_THIRD:
-      case IntervalEnum.MINOR_SIXTH:
-      case IntervalEnum.MINOR_SEVENTH:
-        type++;
+    if (_.indexOf(MinorIntervals, type) !== -1) {
+      type++;
     }
     return type;
   };
