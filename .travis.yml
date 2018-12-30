@@ -1,0 +1,9 @@
+
+deploy:
+  provider: npm
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    branch: release
+    tags: true
+    tag: next
