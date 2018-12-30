@@ -1,8 +1,8 @@
 const IntervalModEnum = Object.freeze({
-  DIMINISHED: -1,
-  MINOR: 0,
-  MAJOR: 1,
-  AUGMENTED: 2,
+  DIMINISHED: 0,
+  MINOR: 1,
+  MAJOR: 2,
+  AUGMENTED: 3,
 });
 
 export default IntervalModEnum;

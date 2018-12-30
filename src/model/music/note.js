@@ -34,6 +34,17 @@ class Note extends Tone {
   constructor(freq, note, key, use_flats = false) {
     super(freq);
     this.use_flats = use_flats;
+    this.setNoteKey(note, key);
+    this.setFreq(freq);
+  }
+
+  setFreq = (freq) => {
+    if (freq === undefined) { // calculate freq if not given
+      this.freq = this.calcFreq();
+    }
+  };
+
+  setNoteKey = (note, key) => {
     if (key === undefined && note === undefined) {
       throw new Error("must specify key and note");
     } else if (key === undefined) { // key not given
@@ -46,10 +57,7 @@ class Note extends Tone {
       this.note = this.parseNote(note);
       this.key = key;
     }
-    if (freq === undefined) { // calculate freq if not given
-      this.freq = this.calcFreq();
-    }
-  }
+  };
 
   get name() {
     return this.toString();
@@ -167,28 +175,37 @@ class Note extends Tone {
     return { letter: letter, accidentals: accidentals, octave: octave };
   };
 
-  getNote(note_value, use_flats) {
-    let letter;
-    let accidentals;
+  static _invertNoteValues = () => {
     let value_to_note = {};
     for (let key in NOTE_VALUES) {
       value_to_note[NOTE_VALUES[key]] = key;
     }
+    return value_to_note;
+  };
+
+  getNote(note_value, use_flats) {
+    let letter;
+    let accidentals;
+    let value_to_note = Note._invertNoteValues();
     if (!(note_value in value_to_note)) {
-      if (use_flats) {
-        letter = value_to_note[(note_value + 1) % 12];
-        accidentals = FLAT;
-      }
-      else {
-        letter = value_to_note[(note_value + 11) % 12];
-        accidentals = SHARP;
-      }
-    }
-    else {
+      ({ letter, accidentals } = this._applySharps(use_flats, letter, value_to_note, note_value, accidentals));
+    } else {
       letter = value_to_note[note_value];
       accidentals = "";
     }
     return { letter: letter, accidentals: accidentals };
+  }
+
+  _applySharps(use_flats, letter, value_to_note, note_value, accidentals) {
+    if (use_flats) {
+      letter = value_to_note[(note_value + 1) % 12];
+      accidentals = FLAT;
+    }
+    else {
+      letter = value_to_note[(note_value + 11) % 12];
+      accidentals = SHARP;
+    }
+    return { letter, accidentals };
   }
 };
 

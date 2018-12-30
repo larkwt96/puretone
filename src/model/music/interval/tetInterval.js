@@ -1,4 +1,11 @@
-import { Interval, EtInterval, PureInterval, IntervalEnum, IntervalModEnum } from ".";
+import {
+  Interval,
+  EtInterval,
+  PureInterval,
+  IntervalStepRatios,
+  IntervalEnum,
+  IntervalModEnum
+} from ".";
 import { Note } from "..";
 
 class TetInterval extends Interval {
@@ -13,14 +20,17 @@ class TetInterval extends Interval {
     if (this._step === undefined) {
       this._step = 0;
       for (let idx in this.intervals) {
-        const { type, mod, raise } = this.intervals[idx];
-        this._step += this._calcStep(type, mod, raise);
+        const { type, mods, raise } = this.intervals[idx];
+        this._step += this._calcStep(type, mods, raise);
       }
     }
     return this._step;
   }
 
   applyInterval = (type = IntervalEnum.UNISON, mods = [], raise = true) => {
+    if (!Array.isArray(mods)) {
+      mods = [mods];
+    }
     this.intervals.push({ type: type, mods: mods, raise: raise });
     this._step = undefined;
   };
@@ -88,10 +98,10 @@ class TetInterval extends Interval {
         step--;
         break;
       case IntervalModEnum.MINOR:
-        type = this.toMinor(type);
+        type = this._toMinor(type);
         break;
       case IntervalModEnum.MAJOR:
-        type = this.toMajor(type);
+        type = this._toMajor(type);
         break;
     }
     return { type: type, step: step };
@@ -99,17 +109,17 @@ class TetInterval extends Interval {
 
   _generateWithFreq = (root, freq) => {
     const note = new Note(freq, undefined, root.key + this.step);
-    let center = this._raiseNote(root.note.letter + root.note.octave);
+    let center = this._calcLetter(root.note.letter + root.note.octave);
     note.simplifyNote(undefined, center);
     return note;
   };
 
   _toMinor = (type) => {
     switch (type) {
-      case MAJOR_SECOND:
-      case MAJOR_THIRD:
-      case MAJOR_SIXTH:
-      case MAJOR_SEVENTH:
+      case IntervalEnum.MAJOR_SECOND:
+      case IntervalEnum.MAJOR_THIRD:
+      case IntervalEnum.MAJOR_SIXTH:
+      case IntervalEnum.MAJOR_SEVENTH:
         type--;
     }
     return type;
@@ -117,10 +127,10 @@ class TetInterval extends Interval {
 
   _toMajor = (type) => {
     switch (type) {
-      case MINOR_SECOND:
-      case MINOR_THIRD:
-      case MINOR_SIXTH:
-      case MINOR_SEVENTH:
+      case IntervalEnum.MINOR_SECOND:
+      case IntervalEnum.MINOR_THIRD:
+      case IntervalEnum.MINOR_SIXTH:
+      case IntervalEnum.MINOR_SEVENTH:
         type++;
     }
     return type;
@@ -137,33 +147,33 @@ class TetInterval extends Interval {
   _raiseNote = (letter, type, raise) => {
     let raiseBy;
     switch (type) {
-      case UNISON:
+      case IntervalEnum.UNISON:
         raiseBy = 0;
         break;
-      case MINOR_SECOND:
-      case MAJOR_SECOND:
+      case IntervalEnum.MINOR_SECOND:
+      case IntervalEnum.MAJOR_SECOND:
         raiseBy = 1;
         break;
-      case MINOR_THIRD:
-      case MAJOR_THIRD:
+      case IntervalEnum.MINOR_THIRD:
+      case IntervalEnum.MAJOR_THIRD:
         raiseBy = 2;
         break;
-      case PERFECT_FOURTH:
+      case IntervalEnum.PERFECT_FOURTH:
         raiseBy = 3;
         break;
-      case TRITONE:
-      case PERFECT_FIFTH:
+      case IntervalEnum.TRITONE:
+      case IntervalEnum.PERFECT_FIFTH:
         raiseBy = 4;
         break;
-      case MINOR_SIXTH:
-      case MAJOR_SIXTH:
+      case IntervalEnum.MINOR_SIXTH:
+      case IntervalEnum.MAJOR_SIXTH:
         raiseBy = 5;
         break;
-      case MINOR_SEVENTH:
-      case MAJOR_SEVENTH:
+      case IntervalEnum.MINOR_SEVENTH:
+      case IntervalEnum.MAJOR_SEVENTH:
         raiseBy = 6;
         break;
-      case OCTAVE:
+      case IntervalEnum.OCTAVE:
         raiseBy = 7;
         break;
     }
@@ -181,19 +191,26 @@ class TetInterval extends Interval {
       switch (letter) {
         case 'A':
           letter = 'G';
+          break;
         case 'B':
           letter = 'A';
+          break;
         case 'C':
           letter = 'B';
           octave--;
+          break;
         case 'D':
           letter = 'C';
+          break;
         case 'E':
           letter = 'D';
+          break;
         case 'F':
           letter = 'E';
+          break;
         case 'G':
           letter = 'F';
+          break;
       }
     }
     return letter + octave;
@@ -206,19 +223,26 @@ class TetInterval extends Interval {
       switch (letter) {
         case 'A':
           letter = 'B';
+          break;
         case 'B':
           letter = 'C';
           octave++;
+          break;
         case 'C':
           letter = 'D';
+          break;
         case 'D':
           letter = 'E';
+          break;
         case 'E':
           letter = 'F';
+          break;
         case 'F':
           letter = 'G';
+          break;
         case 'G':
           letter = 'A';
+          break;
       }
     }
     return letter + octave;
