@@ -128,9 +128,10 @@ class Note extends Tone {
   calcKey = (note = this.note) => {
     let { letter, accidentals, octave } = note;
     let value = NOTE_VALUES[letter]; // get note value
-    Array.from(accidentals).map(v => {
-      value += ACCIDENTAL_VALUES[v];
-    });
+    const accidentalsArray = Array.from(accidentals);
+    for (let idx in accidentalsArray) {
+      value += ACCIDENTAL_VALUES[accidentalsArray[idx]];
+    }
     value -= 8; // adjust for A0, change to 9 for A0=0
     value += 12 * parseInt(octave); // add octave shift
     return value;

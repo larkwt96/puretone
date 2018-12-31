@@ -40,7 +40,7 @@ class Chord {
   get notes() {
     if (this._notes === undefined) {
       this._notes = [this.root];
-      for (idx in this.intervals) {
+      for (let idx in this.intervals) {
         const note = this.intervals[idx].generate(this.root);
         this._notes.push(note);
       }
