@@ -34,7 +34,7 @@ class Index extends React.Component {
     return (
       <div className={classes.root}>
         <Typography variant="h4" gutterBottom>
-          Pure Tone v0.3.4
+          Pure Tone v0.3.5
         </Typography>
       </div>
     );
