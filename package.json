@@ -9,7 +9,7 @@
     "lodash": "^4.17.11",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "react-scripts": "2.1.1",
+    "react-scripts": "2.1.2",
     "start": "^5.1.0"
   },
   "scripts": {
@@ -30,6 +30,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-config-google": "^0.11.0",
     "jest": "^23.6.0"
   }
 }
