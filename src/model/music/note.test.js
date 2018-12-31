@@ -12,49 +12,49 @@ test("no note and no key should throw", () => {
 });
 
 test("note and freq overrides default freq", () => {
-  const { freq, note, name, key } = new Note(440, "C4");
+  const { freq, name, key } = new Note(440, "C4");
   expect(freq).toBeCloseTo(440);
   expect(name).toBe("C4");
   expect(key).toBeCloseTo(40);
 });
 
 test("key and freq overrides default freq", () => {
-  const { freq, note, name, key } = new Note(440, undefined, 40);
+  const { freq, name, key } = new Note(440, undefined, 40);
   expect(freq).toBeCloseTo(440);
   expect(name).toBe("C4");
   expect(key).toBeCloseTo(40);
 });
 
 test("key, note, and freq overrides default freq", () => {
-  const { freq, note, name, key } = new Note(440, "C4", 59);
+  const { freq, name, key } = new Note(440, "C4", 59);
   expect(freq).toBeCloseTo(440);
   expect(name).toBe("C4");
   expect(key).toBe(59);
 });
 
 test("note C4 sets freq and key", () => {
-  const { freq, note, name, key } = new Note(undefined, "C4");
+  const { freq, name, key } = new Note(undefined, "C4");
   expect(freq).toBeCloseTo(261.625);
   expect(name).toBe("C4");
   expect(key).toBe(40);
 });
 
 test("note A4 sets freq and key", () => {
-  const { freq, note, name, key } = new Note(undefined, "A4");
+  const { freq, name, key } = new Note(undefined, "A4");
   expect(freq).toBeCloseTo(440);
   expect(name).toBe("A4");
   expect(key).toBe(49);
 });
 
 test("note A5 sets freq and key", () => {
-  const { freq, note, name, key } = new Note(undefined, "A5");
+  const { freq, name, key } = new Note(undefined, "A5");
   expect(freq).toBeCloseTo(440 * 2);
   expect(name).toBe("A5");
   expect(key).toBe(49 + 12);
 });
 
 test("note C5 sets freq and key", () => {
-  const { freq, note, name, key } = new Note(undefined, "C5");
+  const { freq, name, key } = new Note(undefined, "C5");
   expect(freq).toBeCloseTo(261.625 * 2);
   expect(name).toBe("C5");
   expect(key).toBe(40 + 12);

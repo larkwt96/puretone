@@ -45,4 +45,5 @@ test("getNoteByKey Db4", () => {
 
 test("getNoteByName", () => {
   const note = NoteBuilder.getNoteByName("C#4");
+  expect(note).toBeDefined();
 });

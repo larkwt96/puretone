@@ -71,7 +71,7 @@ class TetInterval extends Interval {
     let denTotal = 1;
     for (let idx in this.intervals) {
       const { type, raise } = this.intervals[idx];
-      const [num, den] = IntervalStepRatios[type]
+      let [num, den] = IntervalStepRatios[type]
       if (!raise) {
         [num, den] = [den, num];
       }
@@ -111,6 +111,7 @@ class TetInterval extends Interval {
       case IntervalModEnum.MAJOR:
         type = this._toMajor(type);
         break;
+      default:
     }
     return { type: type, step: step };
   };
@@ -176,6 +177,7 @@ class TetInterval extends Interval {
       case IntervalEnum.OCTAVE:
         raiseBy = 7;
         break;
+      default:
     }
     if (raise) {
       return this._raiseNoteBy(letter, raiseBy);
@@ -211,6 +213,7 @@ class TetInterval extends Interval {
         case 'G':
           letter = 'F';
           break;
+        default:
       }
     }
     return letter + octave;
@@ -243,6 +246,7 @@ class TetInterval extends Interval {
         case 'G':
           letter = 'A';
           break;
+        default:
       }
     }
     return letter + octave;
