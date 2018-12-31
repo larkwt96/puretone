@@ -113,7 +113,8 @@ const perfects = [
 
 const all = minors.concat(majors).concat(perfects);
 
-for (let idx in majors) {
+
+const doTestSet = (idx) => {
   test("majors to majors: single", () => {
     interval.applyInterval(majors[idx], IntervalModEnum.MAJOR);
     interval2.applyInterval(majors[idx]);
@@ -153,9 +154,12 @@ for (let idx in majors) {
     expect(interval.step).toBe(interval2.step);
     expect(interval2.step).toBe(interval3.step);
   });
+};
+for (let idx in majors) {
+  doTestSet(idx);
 }
 
-for (let idx in all) {
+const doTestSet2 = (idx) => {
   test("augment adds one to each", () => {
     interval.applyInterval(all[idx]);
     interval2.applyInterval(all[idx], IntervalModEnum.AUGMENTED);
@@ -179,11 +183,14 @@ for (let idx in all) {
     interval3.applyInterval(all[idx], [IntervalModEnum.AUGMENTED, IntervalModEnum.AUGMENTED]);
     expect(interval3.step).toBe(interval.step + 2);
   });
+};
+for (let idx in all) {
+  doTestSet2(idx);
 }
 
 
 // all above but lower
-for (let idx in majors) {
+const doTestSet3 = (idx) => {
   test("majors to majors: single", () => {
     interval.applyInterval(majors[idx], IntervalModEnum.MAJOR, false);
     interval2.applyInterval(majors[idx], undefined);
@@ -223,9 +230,12 @@ for (let idx in majors) {
     expect(interval.step).toBe(-interval2.step);
     expect(interval2.step).toBe(-interval3.step);
   });
+};
+for (let idx in majors) {
+  doTestSet3(idx);
 }
 
-for (let idx in perfects) {
+const doTestSet4 = (idx) => {
   test("major minor does nothing to perfect", () => {
     interval.applyInterval(perfects[idx]);
     interval2.applyInterval(perfects[idx], IntervalModEnum.MAJOR);
@@ -233,9 +243,12 @@ for (let idx in perfects) {
     expect(interval.step).toBe(interval2.step);
     expect(interval.step).toBe(interval3.step);
   });
+};
+for (let idx in perfects) {
+  doTestSet4(idx);
 }
 
-for (let idx in all) {
+const doTestSet5 = (idx) => {
   test("augment adds one to each", () => {
     interval.applyInterval(all[idx], undefined, false);
     interval2.applyInterval(all[idx], IntervalModEnum.AUGMENTED, false);
@@ -259,6 +272,9 @@ for (let idx in all) {
     interval3.applyInterval(all[idx], [IntervalModEnum.DIMINISHED, IntervalModEnum.DIMINISHED], false);
     expect(interval3.step).toBe(interval.step + 2);
   });
+};
+for (let idx in all) {
+  doTestSet5(idx);
 }
 
 test("super add", () => {
@@ -327,17 +343,20 @@ let major_scale_absolute = [
   IntervalEnum.OCTAVE,
 ];
 
+const typeLetterTest = (typeI, letterI) => {
+  test("each calculates correct letter", () => {
+    interval.applyInterval(major_scale_absolute[typeI]);
+    const name = letters[letterI] + "4";
+    const currentNote = NoteBuilder.getNoteByName(name);
+    const note = interval.generate(currentNote);
+    const index = (parseInt(typeI) + parseInt(letterI) + 1) % letters.length;
+    const target = letters[index];
+    expect(note.name[0]).toBe(target);
+  });
+};
 for (let typeI in major_scale_absolute) {
   for (let letterI in letters) {
-    test("each calculates correct letter", () => {
-      interval.applyInterval(major_scale_absolute[typeI]);
-      const name = letters[letterI] + "4";
-      const currentNote = NoteBuilder.getNoteByName(name);
-      const note = interval.generate(currentNote);
-      const index = (parseInt(typeI) + parseInt(letterI) + 1) % letters.length;
-      const target = letters[index];
-      expect(note.name[0]).toBe(target);
-    });
+    typeLetterTest(typeI, letterI);
   }
 }
 
