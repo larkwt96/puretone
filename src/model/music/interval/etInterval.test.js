@@ -1,5 +1,5 @@
-import { NoteBuilder } from "..";
-import EtInterval from "./etInterval"
+import { EtInterval } from '.'
+import { NoteBuilder } from '..';
 
 let etInterval;
 const C4 = 261.62556;

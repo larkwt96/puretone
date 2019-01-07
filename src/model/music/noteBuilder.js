@@ -1,4 +1,4 @@
-import { Note } from ".";
+import { Note } from '.';
 
 class NoteBuilder {
   static getStdA440 = () => {

@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Tone } from ".";
+import _ from 'lodash';
+import { Tone } from '.';
 
 // primary symbols
 const SHARP = '♯';

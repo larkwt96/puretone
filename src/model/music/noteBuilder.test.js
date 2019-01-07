@@ -1,4 +1,4 @@
-import NoteBuilder from "./noteBuilder";
+import { NoteBuilder } from '.';
 
 test("getStdA440 works", () => {
   expect(NoteBuilder.getStdA440()).toBeDefined();

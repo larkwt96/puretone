@@ -1,5 +1,5 @@
-import { PureInterval, IntervalEnum, IntervalStepRatios } from ".";
-import { Tone } from "..";
+import { PureInterval, IntervalEnum, IntervalStepRatios } from '.';
+import { Tone } from '..';
 
 let interval;
 

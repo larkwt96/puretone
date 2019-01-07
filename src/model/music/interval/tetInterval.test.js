@@ -1,6 +1,5 @@
-import { IntervalEnum, IntervalModEnum } from ".";
-import TetInterval from "./tetInterval";
-import NoteBuilder from "../noteBuilder";
+import { IntervalEnum, IntervalModEnum, TetInterval } from '.';
+import { NoteBuilder } from '..';
 
 let interval;
 let interval2;

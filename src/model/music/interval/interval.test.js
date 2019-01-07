@@ -1,5 +1,5 @@
-import Interval from "./interval";
-import { NoteBuilder } from "..";
+import { Interval } from '.';
+import { NoteBuilder } from '..';
 
 test("constructor", () => {
   expect(new Interval()).toBeDefined();

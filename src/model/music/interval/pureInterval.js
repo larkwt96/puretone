@@ -1,10 +1,11 @@
-import { Interval } from ".";
-import { Tone } from "..";
+import { Interval, IntervalType } from '.';
+import { Tone } from '..';
 
 class PureInterval extends Interval {
   constructor(num, den) {
     super();
     this.set(num, den);
+    this.type = IntervalType.PURE;
   }
 
   set ratio(ratio) {

@@ -1,7 +1,7 @@
 import Chord from "./chord";
 import { EtInterval, Interval } from "./interval";
-import { Tone } from ".";
-import { SoundType } from "../sound";
+import { Tone } from '.';
+import { SoundType } from '../sound';
 
 let chord;
 

@@ -1,13 +1,14 @@
 import {
   Interval,
+  IntervalType,
   EtInterval,
   PureInterval,
   IntervalStepRatios,
   IntervalEnum,
   IntervalModEnum
-} from ".";
-import { Note } from "..";
-import _ from "lodash";
+} from '.';
+import { Note } from '..';
+import _ from 'lodash';
 
 const MajorIntervals = [
   IntervalEnum.MAJOR_SECOND,
@@ -28,6 +29,7 @@ class TetInterval extends Interval {
     super();
     this.intervals = [];
     this.usePureInterval = false;
+    this.type = IntervalType.TET;
     this._step = 0;
   }
 

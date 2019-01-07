@@ -1,4 +1,4 @@
-import { SoundType, Sound } from "../sound";
+import { SoundType, Sound } from '../sound';
 
 class Chord {
   constructor(root, duration = 1.0, soundType = undefined) {
