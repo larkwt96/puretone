@@ -1,6 +1,6 @@
 {
   "name": "puretone",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "homepage": "https://larkwt96.github.io/puretone",
   "dependencies": {
     "@material-ui/core": "^3.7.1",
