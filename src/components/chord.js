@@ -40,7 +40,7 @@ const styles = theme => ({
   },
 });
 
-class ChordElement extends React.Component {
+class Chord extends React.Component {
   getNoteAvatar = (note) => {
     if ("note" in note) {
       return note.note.letter;
@@ -85,8 +85,8 @@ class ChordElement extends React.Component {
   };
 };
 
-ChordElement.propTypes = {
+Chord.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ChordElement);
+export default withStyles(styles)(Chord);

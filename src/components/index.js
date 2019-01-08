@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { Chord, NoteBuilder, Tone } from '../model/music';
 import { PureInterval, EtInterval, TetInterval, IntervalEnum } from "../model/music/interval";
 import Model from '../model/model';
-import ChordElement from './chordElement';
+import ChordElement from './chord';
 
 const styles = theme => ({
   appBar: {
