@@ -6,8 +6,8 @@ class Interval {
 
   generate = (root) => {
     // unison by default.
-    const { freq, name, key } = root;
-    return new Tone(freq, name, key);
+    const { freq } = root;
+    return new Tone(freq);
   }
 
   toString = () => {

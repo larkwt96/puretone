@@ -5,46 +5,20 @@ import { Paper, ListItem, Avatar, ListItemText, List, Divider, Typography } from
 import { SoundType } from '../model/sound';
 import { IntervalType } from '../model/music/interval';
 
+
 const styles = theme => ({
-  appBar: {
-    position: 'relative',
-  },
   dividerFullWidth: {
     margin: `5px 0 0 ${theme.spacing.unit * 2}px`,
   },
-  dividerInset: {
-    margin: `5px 0 0 ${theme.spacing.unit * 9}px`,
-  },
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
   paper: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    padding: theme.spacing.unit,
     [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
+      marginTop: theme.spacing.unit,
+      marginBottom: theme.spacing.unit,
+      padding: theme.spacing.unit,
     },
-  },
-  stepper: {
-    padding: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 5}px`,
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit,
   },
 });
 
@@ -78,9 +52,9 @@ class Chord extends React.Component {
         {
           intervals.map((interval, id) => {
             return (
-              <ListItem divider={id !== intervals.length - 1} className={classes.dividerInset}>
+              <ListItem>
                 {/*<Avatar>{this.renderIntervalAvatar(interval.type)}</Avatar>*/}
-                <ListItemText primary={`${notes[id]}`} secondary={`${interval}`} />
+                <ListItemText primary={`${notes[id + 1]}`} secondary={`${interval}`} />
               </ListItem>
             )
           })

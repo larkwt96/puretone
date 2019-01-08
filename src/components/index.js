@@ -24,27 +24,6 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  paper: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
-    },
-  },
-  stepper: {
-    padding: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 5}px`,
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit,
-  },
 });
 
 class Index extends React.Component {
@@ -75,11 +54,16 @@ class Index extends React.Component {
     const C4 /* C4 */ = NoteBuilder.getNoteByName('C4');
     const C4Chord = new Chord(C4);
 
+    const CMChord = new Chord(C4);
+    CMChord.addInterval(new TetInterval(IntervalEnum.MAJOR_THIRD));
+    CMChord.addInterval(new TetInterval(IntervalEnum.PERFECT_FIFTH));
+
     const model = new Model();
     model.add(r440Chord);
     model.add(r440Chord2);
     model.add(A440Chord);
     model.add(C4Chord);
+    model.add(CMChord);
 
     this.setState({ model: model });
   };

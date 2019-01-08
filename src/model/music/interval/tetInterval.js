@@ -25,12 +25,19 @@ const MinorIntervals = [
 ];
 
 class TetInterval extends Interval {
-  constructor() {
+  constructor(intervals) {
     super();
     this.intervals = [];
     this.usePureInterval = false;
     this.type = IntervalType.TET;
     this._step = 0;
+    if (Array.isArray(intervals)) {
+      for (let idx in intervals) {
+        this.applyInterval(intervals[idx]);
+      }
+    } else if (intervals !== undefined) {
+      this.applyInterval(intervals);
+    }
   }
 
   get step() {
