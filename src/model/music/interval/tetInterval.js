@@ -253,6 +253,10 @@ class TetInterval extends Interval {
     }
     return letter + octave;
   };
+
+  toString = () => {
+    return `12-ET: ${this.step} steps`;
+  };
 }
 
 export default TetInterval;

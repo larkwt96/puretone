@@ -64,6 +64,7 @@ class Index extends React.Component {
     // chord 2
     const r440Chord2 = new Chord(r440);
     r440Chord2.addInterval(new PureInterval(3, 2));
+    r440Chord2.addInterval(new PureInterval(54.588));
 
     const A440 /* A4 */ = NoteBuilder.getNoteByName('A4');
     const A440Chord = new Chord(A440);

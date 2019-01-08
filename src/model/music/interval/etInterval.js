@@ -13,6 +13,10 @@ class EtInterval extends Interval {
     const power = Math.pow(2, this.step / this.base);
     return new Tone(root.freq * power);
   };
+
+  toString = () => {
+    return `ET: ${this.step} steps (base: ${this.base})`;
+  };
 };
 
 export default EtInterval;

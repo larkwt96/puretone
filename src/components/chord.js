@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper, ListItem, Avatar, ListItemText, ListSubheader, List } from '@material-ui/core';
+import { Paper, ListItem, Avatar, ListItemText, List, Divider, Typography } from '@material-ui/core';
+import { SoundType } from '../model/sound';
+import { IntervalType } from '../model/music/interval';
 
 const styles = theme => ({
   appBar: {
     position: 'relative',
+  },
+  dividerFullWidth: {
+    margin: `5px 0 0 ${theme.spacing.unit * 2}px`,
+  },
+  dividerInset: {
+    margin: `5px 0 0 ${theme.spacing.unit * 9}px`,
   },
   layout: {
     width: 'auto',
@@ -49,16 +57,30 @@ class Chord extends React.Component {
     }
   };
 
-  zipIntervalsAndNotes = (chord) => {
+  renderIntervalAvatar = (type) => {
+    switch (type) {
+      case IntervalType.BARE:
+        return "BA"
+      case IntervalType.ET:
+        return "ET"
+      case IntervalType.PURE:
+        return "PR"
+      case IntervalType.TET:
+        return "12"
+      default:
+    }
+  }
+
+  zipIntervalsAndNotes = (classes, chord) => {
     const { intervals, notes } = chord;
     return (
       <React.Fragment>
         {
           intervals.map((interval, id) => {
             return (
-              <ListItem>
-                <Avatar>{this.getNoteAvatar(notes[id])}</Avatar>
-                <ListItemText primary={`${notes[id]}`} secondary={`${JSON.stringify(interval)}`} />
+              <ListItem divider={id !== intervals.length - 1} className={classes.dividerInset}>
+                {/*<Avatar>{this.renderIntervalAvatar(interval.type)}</Avatar>*/}
+                <ListItemText primary={`${notes[id]}`} secondary={`${interval}`} />
               </ListItem>
             )
           })
@@ -67,20 +89,49 @@ class Chord extends React.Component {
     );
   };
 
+  renderSoundType = (soundType) => {
+    switch (soundType) {
+      case SoundType.FLAT:
+        return "";
+      case SoundType.FADE:
+        return "with fade ";
+      default:
+        return "special form ";
+    }
+  };
+
+  renderIntervals = (classes, chord) => {
+    if (chord.intervals.length === 0) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <Divider component="li" />
+        <li>
+          <Typography className={classes.dividerFullWidth} color="textSecondary" variant="caption">
+            Intervals
+          </Typography>
+        </li>
+        {this.zipIntervalsAndNotes(classes, chord)}
+      </React.Fragment>
+    );
+  }
+
   render() {
     const { classes, chord } = this.props;
     const { root, duration, soundType } = chord;
+    const details = `Plays ${this.renderSoundType(soundType)}for ${Number(duration.toFixed(2))} sec`;
 
     return (
       <Paper className={classes.paper}>
         <List className={classes.list}>
-          <ListSubheader className={classes.subHeader}>{`Note: ${root}`}</ListSubheader>
-          <ListSubheader className={classes.subHeader}>{`Duration: ${duration}`}</ListSubheader>
-          <ListSubheader className={classes.subHeader}>{`Sound Type: ${soundType}`}</ListSubheader>
-          <ListSubheader className={classes.subHeader}>{`Intervals:`}</ListSubheader>
-          {this.zipIntervalsAndNotes(chord)}
-        </List>
-      </Paper>
+          <ListItem>
+            <Avatar>{this.getNoteAvatar(root)}</Avatar>
+            <ListItemText primary={`${root}`} secondary={details} />
+          </ListItem>
+          {this.renderIntervals(classes, chord)}
+        </List >
+      </Paper >
     );
   };
 };

@@ -9,6 +9,10 @@ class Interval {
     const { freq, name, key } = root;
     return new Tone(freq, name, key);
   }
+
+  toString = () => {
+    return "Unison";
+  }
 };
 
 export default Interval;

@@ -33,6 +33,10 @@ class PureInterval extends Interval {
   generate = (root) => {
     return new Tone(root.freq * this.num / this.den);
   };
+
+  toString = () => {
+    return `Pure: ${Number(this.num.toFixed(2))}/${Number(this.den.toFixed(2))} ratio`;
+  };
 };
 
 export default PureInterval;
