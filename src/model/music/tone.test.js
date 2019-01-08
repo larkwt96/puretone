@@ -18,5 +18,15 @@ test("set freq", () => {
 
 test("toString", () => {
   tone.freq = 2563;
-  expect(tone.toString()).toBe("(2563 hz)");
+  expect(tone.toString()).toBe("2563 Hz");
+});
+
+test("toString decimal", () => {
+  tone.freq = 2563.00;
+  expect(tone.toString()).toBe("2563 Hz");
+});
+
+test("toString float", () => {
+  tone.freq = 2563.0123;
+  expect(tone.toString()).toBe("2563.01 Hz");
 });

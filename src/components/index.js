@@ -93,7 +93,7 @@ class Index extends React.Component {
         <AppBar position="absolute" color="default" className={classes.appBar}>
           <Toolbar>
             <Typography variant="h6" color="inherit" noWrap>
-              Pure Tone v0.3.5
+              Pure Tone v0.3.7
             </Typography>
           </Toolbar>
         </AppBar>

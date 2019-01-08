@@ -4,7 +4,8 @@ class Tone {
   }
 
   toString = () => {
-    return "(" + this.freq + " hz)";
+    const truncated = Number(this.freq.toFixed(2));
+    return `${truncated} Hz`;
   };
 }
 
